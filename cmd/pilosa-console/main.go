@@ -7,12 +7,9 @@ import (
 	"regexp"
 
 	"github.com/pkg/errors"
-	"github.com/rakyll/statik/fs"
-
-	_ "github.com/pilosa/console/pkg/static/statik"
 )
 
-var bind = flag.String("bind", ":8000", "bind address")
+var bind = flag.String("bind", ":800", "bind address")
 
 func main() {
 	var port string
@@ -26,15 +23,10 @@ func main() {
 	}
 	webAddress := "http://localhost:" + port
 
-	statikFS, err := fs.New()
-	if err != nil {
-		log.Fatal(errors.Wrap(err, "initializing statik filesystem"))
-	}
-
-	http.Handle("/", http.FileServer(statikFS))
+	http.Handle("/", http.FileServer(http.Dir(".")))
 
 	log.Println("Serving Pilosa Console at " + webAddress)
-	err = http.ListenAndServe(*bind, nil)
+	err := http.ListenAndServe(*bind, nil)
 	if err != nil {
 		log.Fatal(errors.Wrap(err, "running ListenAndServe"))
 	}

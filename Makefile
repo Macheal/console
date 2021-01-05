@@ -3,6 +3,7 @@
 VERSION = $(shell git describe --tags 2> /dev/null || echo unknown)
 VERSION_ID = $(VERSION)-$(GOOS)-$(GOARCH)
 PKG = github.com/pilosa/console
+CROSS-LINUX=CGO_ENABLED=0 GOOS=linux GOARCH=amd64
 
 clean:
 	rm -rf vendor build
@@ -28,6 +29,12 @@ run: vendor generate
 
 build: vendor generate
 	go build $(FLAGS) $(PKG)/cmd/pilosa-console
+
+
+build-linux: 
+	$(CROSS-LINUX) go build -o ./assets/ ./cmd/pilosa-console 
+docker: build-linux
+     
 
 release-build:
 	$(MAKE) build FLAGS="-o build/pilosa-console-$(VERSION_ID)/pilosa-console"
