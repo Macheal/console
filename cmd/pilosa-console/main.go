@@ -9,7 +9,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-var bind = flag.String("bind", ":800", "bind address")
+var bind = flag.String("bind", ":8000", "bind address")
 
 func main() {
 	var port string

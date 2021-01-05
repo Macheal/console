@@ -34,6 +34,7 @@ build: vendor generate
 build-linux: 
 	$(CROSS-LINUX) go build -o ./assets/ ./cmd/pilosa-console 
 docker: build-linux
+	docker build -t pilosa-console:latest .
      
 
 release-build:
